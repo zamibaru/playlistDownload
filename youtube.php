@@ -9,13 +9,14 @@
 
 
 // Use this file to write video urls
-const myFile = 'music.txt';
+const myFile = 'music1.txt';
 
 // Use this file to write download Urls from Offliberty 
 const myDownloadFile = 'musicDownload.txt';
 
 // Set playlist url
 const Playlist_URL = 'https://www.youtube.com/playlist?list=PLH6eNVHVEetB-8oOWaXBHBewhOfLz_uRf';
+DownloadYoutube();
 
 function DownloadYoutube()
 {
@@ -42,12 +43,13 @@ function DownloadYoutube()
 		}
 		fclose($fileLinks);
 		// Get mp3 download links
-		$output = shell_exec('off music.txt');
+		$output = shell_exec('off '.myFile);
 		// open file
 		$fileDownloadLinks = fopen(myDownloadFile, 'w') or die("can't open file");
 		// write links to file 
 		fwrite($fileDownloadLinks, $output);
 		fclose($fileDownloadLinks);
+		ParseDownloadFile();
 	}
 	else
 	{
@@ -57,11 +59,37 @@ function DownloadYoutube()
 
 function ParseDownloadFile()
 {
-	// TODO Parse download file 
+	$fileDownloadLinks = fopen(myDownloadFile, 'r') or die("can't open file");
+
+	if(filesize(myDownloadFile)>0)
+	{
+	  $contents = fread($fileDownloadLinks, filesize(myDownloadFile));
+	  $arrDlinks = explode("\n", $contents);
+	}
+	else
+	{
+		echo "Empty file";
+		return false;
+	}
+
+	foreach ($arrDlinks as  $value)
+	{
+		// Check valid url
+		$boolCheckURL = preg_match("/^(http?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/", $value);
+		if($boolCheckURL)
+		{
+			DownloadMp3($value);
+		}
+		else
+		{
+			echo "Offliberty script returned null \n";
+		}
+	}
 }
 
-function DownloadMp3()
+function DownloadMp3($strUrl)
 {
+	echo $strUrl;
 	// TODO Download files
 }
 ?>
