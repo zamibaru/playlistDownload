@@ -53,7 +53,7 @@ function DownloadYoutube()
 	}
 	else
 	{
-	echo "Server error \n";
+		echo "Server error \n";
 	}
 }
 
@@ -63,8 +63,8 @@ function ParseDownloadFile()
 
 	if(filesize(myDownloadFile)>0)
 	{
-	  $contents = fread($fileDownloadLinks, filesize(myDownloadFile));
-	  $arrDlinks = explode("\n", $contents);
+		$contents = fread($fileDownloadLinks, filesize(myDownloadFile));
+		$arrDlinks = explode("\n", $contents);
 	}
 	else
 	{
