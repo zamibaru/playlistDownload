@@ -1,10 +1,10 @@
 <?php 
 ////////////////////////////////////////////////////////////////////////////
-	// Download Youtube Playlist
-	/**
-	 * Simple script for youtube playlist download
-	 * Offliberty package needed https://www.npmjs.com/package/offliberty
-	 **/
+// Download Youtube Playlist
+/**
+ * Simple script for youtube playlist download
+ * Offliberty package needed https://www.npmjs.com/package/offliberty
+ **/
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -89,7 +89,19 @@ function ParseDownloadFile()
 
 function DownloadMp3($strUrl)
 {
-	echo $strUrl;
-	// TODO Download files
+	// Get file name
+	$arrFileName = explode('/',$strUrl);
+	$destination = $arrFileName[3];
+	// Store file
+	$fp = fopen($destination, "w+");
+
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $strUrl);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_FILE, $fp);
+	$data = curl_exec ($ch);
+	$error = curl_error($ch); 
+	curl_close ($ch);
+	// TODO keep song name
 }
 ?>
